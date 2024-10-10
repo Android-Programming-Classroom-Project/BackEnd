@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: BridgeTalkBackEnd
+  jwt:
+    secret: dfhfdsafdsafdskjhfdajfhiaadsfhasdhfdsajafdsjsdf
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bridgetalk?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: faith1918!
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+server:
+  port: 8080
