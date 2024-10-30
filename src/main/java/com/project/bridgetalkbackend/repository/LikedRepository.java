@@ -8,4 +8,6 @@ import java.util.UUID;
 public interface LikedRepository extends JpaRepository<Liked, UUID> {
     public Liked findByPostPostId(UUID postId);
     public boolean existsByPostPostIdAndUserUserId(UUID postId, UUID userId);
+
+    void deleteByUserUserIdAndPostPostId(UUID userId, UUID postId);
 }

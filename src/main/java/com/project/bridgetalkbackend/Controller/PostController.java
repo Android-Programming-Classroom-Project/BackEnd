@@ -32,7 +32,7 @@ public class PostController {
     public ResponseEntity<?> postMake(@RequestBody PostUserDTO postUserDTO){
         logger.info("/postMake");
         Post post = postService.makePost(postUserDTO.getPost());
-        commentService.makeComment(postUserDTO.getUser(),post);
+//        commentService.makeComment(postUserDTO.getUser(),post);
         return ResponseEntity.ok().body(post);
     }
 
@@ -67,13 +67,13 @@ public class PostController {
     @PutMapping("/deleteLiked")
     public ResponseEntity<?> deleteLiked(@RequestBody PostUserDTO likedDTO){
         postService.deleteLiked(likedDTO.getUser(),likedDTO.getPost());
-        return (ResponseEntity<?>) ResponseEntity.ok();
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/addComment")
     public Comment makeComment(@RequestBody Comment comment){
-        // 게시물 존재여부
-        // 댓글 생성
+        logger.info("/addComment");
+        // 게시물 존재여부 및 댓글 생성
         if(!postService.checkPost(comment.getPost())){
             throw new IllegalArgumentException("게시물존재 X");
         }

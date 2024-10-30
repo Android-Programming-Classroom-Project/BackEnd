@@ -1,9 +1,8 @@
 package com.project.bridgetalkbackend.Service;
 
-import com.project.bridgetalkbackend.Controller.PostController;
+import com.project.bridgetalkbackend.domain.Liked;
 import com.project.bridgetalkbackend.domain.Post;
 import com.project.bridgetalkbackend.domain.User;
-import com.project.bridgetalkbackend.repository.LikedRepository;
 import com.project.bridgetalkbackend.repository.PostRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -25,13 +23,15 @@ public class PostService {
         this.postRepository = postRepository;
         this.likedService = likedService;
     }
+
     // 게시물 존재여부
-    public Boolean checkPost(Post post){
+    public Boolean checkPost(Post post) {
         return postRepository.existsById(post.getPostId());
     }
+
     //게시물 수정
     @Transactional
-    public Post updatePost(Post post){
+    public Post updatePost(Post post) {
         Post p = postRepository.findById(post.getPostId()).orElseThrow();
         p.setContent(post.getContent());
         p.setTitle(post.getTitle());
@@ -40,36 +40,36 @@ public class PostService {
 
     //게시물 생성
     @Transactional
-    public Post makePost(Post post){
+    public Post makePost(Post post) {
         logger.info("PostService Class makePost Method");
         return postRepository.save(post);
     }
 
     @Transactional(readOnly = true)
-    public Post postFind(UUID id){
+    public Post postFind(UUID id) {
         return postRepository.findById(id).orElseThrow();
     }
 
     //게시물 삭제
     @Transactional
-    public void postDelete(UUID id){
+    public void postDelete(UUID id) {
         postRepository.deleteById(id);
     }
 
-//    @Transactional
-//    public void update(Post post){
-//        postRepository.
-//    }
-
     //좋아요 추가
     @Transactional
-    public void addLiked(User user, Post post){
-        if(!likedService.existLiked(user.getUserId(), post.getPostId())){
+    public void addLiked(User user, Post post) {
+        if (!likedService.existLiked(user.getUserId(), post.getPostId())) {
+            Liked liked = new Liked();
+            liked.setPost(post);
+            liked.setUser(user);
+            likedService.saveLiked(liked);
+
             Post pt = postRepository.findById(post.getPostId()).orElseThrow(() -> {
-                throw new IllegalArgumentException("좋아요 기능: post or user data가 없음");
+                        throw new IllegalArgumentException("좋아요 기능: post or user data가 없음");
                     }
             );
-            pt.setLike_count(pt.getLike_count()+1);
+            pt.setLike_count(pt.getLike_count() + 1);
             postRepository.save(pt);
         }
     }
@@ -85,6 +85,8 @@ public class PostService {
         Post pt = postRepository.findById(post.getPostId())
                 .orElseThrow(() -> new IllegalArgumentException("좋아요 기능: 해당 post가 존재하지 않습니다."));
 
+        likedService.deleteLiked(user.getUserId(), post.getPostId());
+
         // 좋아요 수 감소
         if (pt.getLike_count() > 0) {
             pt.setLike_count(pt.getLike_count() - 1);
@@ -93,6 +95,4 @@ public class PostService {
             throw new IllegalStateException("시스템 오류: 좋아요 수는 이미 0입니다.");
         }
     }
-
-
 }
