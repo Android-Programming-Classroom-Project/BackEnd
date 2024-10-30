@@ -1,19 +1,24 @@
 package com.project.bridgetalkbackend.Service;
 
+import com.project.bridgetalkbackend.Controller.PostController;
 import com.project.bridgetalkbackend.domain.Post;
 import com.project.bridgetalkbackend.domain.User;
 import com.project.bridgetalkbackend.repository.LikedRepository;
 import com.project.bridgetalkbackend.repository.PostRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class PostService {
     private final PostRepository postRepository;
     private final LikedService likedService;
+    private static final Logger logger = LoggerFactory.getLogger(PostService.class);
 
     @Autowired
     public PostService(PostRepository postRepository, LikedService likedService) {
@@ -24,10 +29,19 @@ public class PostService {
     public Boolean checkPost(Post post){
         return postRepository.existsById(post.getPostId());
     }
+    //게시물 수정
+    @Transactional
+    public Post updatePost(Post post){
+        Post p = postRepository.findById(post.getPostId()).orElseThrow();
+        p.setContent(post.getContent());
+        p.setTitle(post.getTitle());
+        return postRepository.save(p);
+    }
 
     //게시물 생성
     @Transactional
     public Post makePost(Post post){
+        logger.info("PostService Class makePost Method");
         return postRepository.save(post);
     }
 
@@ -62,17 +76,21 @@ public class PostService {
 
     //좋아요 삭제
     @Transactional
-    public void deleteLiked(User user, Post post){
-        if(likedService.existLiked(user.getUserId(), post.getPostId())){
-            Post pt = postRepository.findById(post.getPostId()).orElseThrow(() -> {
-                        throw new IllegalArgumentException("좋아요 기능: post or user data가 없음");
-                    }
-            );
-            if(pt.getLike_count() > 0){
-                pt.setLike_count(pt.getLike_count()-1);
-                postRepository.save(pt);
-            }
-            throw new IllegalStateException("시스템오류(여기는 에러가발생하면 안됌) : 이미 좋아요는 0");
+    public void deleteLiked(User user, Post post) {
+        // 좋아요가 존재하는지 확인
+        if (!likedService.existLiked(user.getUserId(), post.getPostId())) {
+            throw new IllegalArgumentException("좋아요 기능: 좋아요가 존재하지 않습니다.");
+        }
+        // Post 조회
+        Post pt = postRepository.findById(post.getPostId())
+                .orElseThrow(() -> new IllegalArgumentException("좋아요 기능: 해당 post가 존재하지 않습니다."));
+
+        // 좋아요 수 감소
+        if (pt.getLike_count() > 0) {
+            pt.setLike_count(pt.getLike_count() - 1);
+            postRepository.save(pt);
+        } else {
+            throw new IllegalStateException("시스템 오류: 좋아요 수는 이미 0입니다.");
         }
     }
 

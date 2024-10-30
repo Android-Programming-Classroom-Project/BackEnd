@@ -62,7 +62,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String email = customUserDetails.getUsername();
         String role = auth.getAuthority();
 
-        String access = jwtUtil.createJwt("access", email, role, 600000L);   // 10분
+        String access = jwtUtil.createJwt("access", email, role, 86400000L);   // 10분 6000000
         String refresh = jwtUtil.createJwt("refresh", email, role, 86400000L); //24시간
 
 //        refreshService.addRefresh(email, role, 86400000L);

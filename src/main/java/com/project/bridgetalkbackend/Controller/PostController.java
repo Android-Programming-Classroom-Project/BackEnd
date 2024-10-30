@@ -6,6 +6,8 @@ import com.project.bridgetalkbackend.domain.Comment;
 import com.project.bridgetalkbackend.domain.Post;
 import com.project.bridgetalkbackend.dto.PostCommentDTO;
 import com.project.bridgetalkbackend.dto.PostUserDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ import java.util.UUID;
 public class PostController {
     private final PostService postService;
     private final CommentService commentService;
+    private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
     @Autowired
     public PostController(PostService postService,CommentService commentService) {
@@ -27,6 +30,7 @@ public class PostController {
     //게시물, 댓글 생성
     @PostMapping("/postMake")
     public ResponseEntity<?> postMake(@RequestBody PostUserDTO postUserDTO){
+        logger.info("/postMake");
         Post post = postService.makePost(postUserDTO.getPost());
         commentService.makeComment(postUserDTO.getUser(),post);
         return ResponseEntity.ok().body(post);
@@ -42,21 +46,22 @@ public class PostController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deletePost(@PathVariable UUID id){
+        logger.info("/delete/{id}");
         postService.postDelete(id);
         return ResponseEntity.ok("삭제가 완료되었습니다");
     }
 
-    //미완성
-    @PutMapping("/update/")
-    public ResponseEntity<?> updatePost(@RequestBody Post post){
-
-        return ResponseEntity.ok("업데이트 완료되었습니다");
+    @PutMapping("/update")
+    public Post updatePost(@RequestBody Post post){
+        logger.info("/update");
+        return postService.updatePost(post);
     }
 
     @PutMapping("/addLiked")
     public ResponseEntity<?> addLiked(@RequestBody PostUserDTO likedDTO){
+        logger.info("/addLiked");
         postService.addLiked(likedDTO.getUser(),likedDTO.getPost());
-        return (ResponseEntity<?>) ResponseEntity.ok();
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/deleteLiked")
