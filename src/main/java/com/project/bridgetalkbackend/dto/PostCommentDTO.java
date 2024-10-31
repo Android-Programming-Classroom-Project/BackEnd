@@ -3,13 +3,15 @@ package com.project.bridgetalkbackend.dto;
 import com.project.bridgetalkbackend.domain.Comment;
 import com.project.bridgetalkbackend.domain.Post;
 
+import java.util.List;
+
 public class PostCommentDTO {
     private Post post;
-    private Comment comment;
+    private List<Comment> commentList;
 
-    public PostCommentDTO(Post post, Comment comment) {
+    public PostCommentDTO(Post post, List<Comment> commentList) {
         this.post = post;
-        this.comment = comment;
+        this.commentList = commentList;
     }
 
     public Post getPost() {
@@ -20,11 +22,11 @@ public class PostCommentDTO {
         this.post = post;
     }
 
-    public Comment getComment() {
-        return comment;
+    public List<Comment> getCommentList() {
+        return commentList;
     }
 
-    public void setComment(Comment comment) {
-        this.comment = comment;
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
     }
 }

@@ -17,10 +17,10 @@ public class ChatRoom {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(updatable = false, nullable = false)
-    private UUID roodId;
+    private UUID roomId;
     @ManyToOne
     @JoinColumn
-    private User userId;
+    private User user;
     @Column
     @JsonFormat(pattern = "yyyy-MM-dd")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -32,20 +32,20 @@ public class ChatRoom {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime updatedAt;
 
-    public UUID getRoodId() {
-        return roodId;
+    public UUID getRoomId() {
+        return roomId;
     }
 
-    public void setRoodId(UUID roodId) {
-        this.roodId = roodId;
+    public void setRoomId(UUID roomId) {
+        this.roomId = roomId;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @PrePersist

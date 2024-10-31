@@ -31,6 +31,7 @@ public class Post {
     private Schools schools;
     private String title;
     private String content;
+    private String type;
     private int like_count = 0;
 
 //    public Post(User user, Schools schools, String title, String content ){
@@ -93,6 +94,14 @@ public class Post {
 
     public String getContent() {
         return content;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setContent(String content) {

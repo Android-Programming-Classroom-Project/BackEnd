@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -34,10 +35,11 @@ public class CommentService {
         logger.info("CommentService: makeComment Method Completed");
     }
     @Transactional(readOnly = true)
-    public Comment getComment(UUID postId) {
-        return commentRepository.findByPostPostId(postId).orElseThrow(
-                ()-> new IllegalStateException("게시물 가져오기: 시스템 에러")
-        );
+    public List<Comment> getComment(UUID postId) {
+        if(commentRepository.existsByPostPostId(postId)){
+            return commentRepository.findByPostPostId(postId);
+        }
+        return null;
     }
 
     @Transactional

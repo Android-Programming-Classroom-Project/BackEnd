@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/post")
@@ -40,7 +41,7 @@ public class PostController {
     @GetMapping("/{id}")
     public PostCommentDTO getPost(@PathVariable UUID id){
         Post post = postService.postFind(id);
-        Comment comment = commentService.getComment(post.getPostId());
+        List<Comment> comment = commentService.getComment(post.getPostId());
         return new PostCommentDTO(post, comment);
     }
 

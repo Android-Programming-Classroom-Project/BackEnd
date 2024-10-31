@@ -20,10 +20,10 @@ public class Message {
     private UUID messageId;
     @ManyToOne
     @JoinColumn
-    private ChatRoom roomId;
+    private ChatRoom chatRoom;
     @ManyToOne
     @JoinColumn
-    private User userId;
+    private User user;
     private String content;
     @Column
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -39,20 +39,20 @@ public class Message {
         this.messageId = messageId;
     }
 
-    public ChatRoom getRoomId() {
-        return roomId;
+    public ChatRoom getChatRoom() {
+        return chatRoom;
     }
 
-    public void setRoomId(ChatRoom roomId) {
-        this.roomId = roomId;
+    public void setChatRoom(ChatRoom chatRoom) {
+        this.chatRoom = chatRoom;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getContent() {
