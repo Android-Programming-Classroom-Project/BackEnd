@@ -26,9 +26,9 @@ public class LoginService {
     }
 
     // 로그인시 정보 제공
-    public InitDTO loginSuccess(String email){
+    public User loginSuccess(String email){
         User user = userRepository.findByEmail(email);
-        List<Post> posts = postRepository.findBySchoolsSchoolId(user.getSchools().getSchoolId());
-        return new InitDTO(user,posts);
+//        List<Post> posts = postRepository.findBySchoolsSchoolId(user.getSchools().getSchoolId());
+        return user;
     }
 }

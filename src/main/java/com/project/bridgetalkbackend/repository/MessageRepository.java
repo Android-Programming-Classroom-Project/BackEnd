@@ -9,6 +9,5 @@ import java.util.UUID;
 public interface MessageRepository extends JpaRepository<Message, UUID> {
     Message findFirstByUserUserIdAndChatRoomRoomIdOrderByCreatedAtDesc(UUID userId, UUID roomId);
     boolean existsByChatRoomRoomIdAndUserUserId(UUID roomId, UUID userId);
-
-    boolean existsByUserUserId(UUID userId);
+    List<Message> findByUserUserIdAndChatRoomRoomId(UUID userId, UUID roomId);
 }

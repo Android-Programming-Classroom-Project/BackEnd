@@ -6,6 +6,7 @@ import com.project.bridgetalkbackend.domain.ChatRoom;
 import com.project.bridgetalkbackend.domain.Message;
 import com.project.bridgetalkbackend.domain.User;
 import com.project.bridgetalkbackend.dto.ChatListRecentResponse;
+import com.project.bridgetalkbackend.dto.UserChatroomRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,16 @@ public class ChatRoomController {
         List<ChatRoom> chatRoomList =  chatRoomService.chatRoomsFind(user);
         List<Message> messageList = messageService.getMessageRecently(user,chatRoomList);
         return ResponseEntity.ok(new ChatListRecentResponse(chatRoomList,messageList));
+    }
+
+    // 채팅 내역 가저오기
+    @GetMapping("/message")
+    public ResponseEntity<?> getMessage(@RequestBody UserChatroomRequest userChatroomRequest){
+        if(userChatroomRequest.getUser() != null && userChatroomRequest.getChatRoom() != null){
+            List<Message> messageList = messageService.getMessageList(userChatroomRequest.getUser(), userChatroomRequest.getChatRoom());
+            return ResponseEntity.ok(messageList);
+        }
+        return (ResponseEntity<?>) ResponseEntity.badRequest();
     }
 
 }

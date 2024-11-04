@@ -1,16 +1,29 @@
 package com.project.bridgetalkbackend.Controller;
 
-import com.project.bridgetalkbackend.dto.MessageDTO;
+import com.project.bridgetalkbackend.Service.MessageService;
+import com.project.bridgetalkbackend.domain.Message;
+import com.project.bridgetalkbackend.repository.MessageRepository;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.web.util.HtmlUtils;
+import org.springframework.stereotype.Controller;
 
+@Controller
 public class WebsocketController {
-@MessageMapping("/hello")
-@SendTo("/pub/greetings")
-public MessageDTO greeting(MessageDTO message) throws Exception {
-    Thread.sleep(1000); // simulated delay
-    return new MessageDTO(message.getContent());
-}
+    private final MessageService messageService;
+
+    public WebsocketController(MessageService messageService) {
+        this.messageService = messageService;
+    }
+
+    @MessageMapping("/{roomId}")
+    @SendTo("/pub/{roomId}")
+    public Message greeting(@DestinationVariable String roomId, Message message) throws Exception {
+        if(message != null){
+            // 메세지 db 저장
+            messageService.saveMessage(message);
+        }
+        return message;
+    }
 }
 

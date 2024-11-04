@@ -25,6 +25,7 @@ public class Message {
     @JoinColumn
     private User user;
     private String content;
+    private boolean isSent;
     @Column
     @JsonFormat(pattern = "yyyy-MM-dd")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -37,6 +38,15 @@ public class Message {
 
     public void setMessageId(UUID messageId) {
         this.messageId = messageId;
+    }
+
+
+    public boolean isSent() {
+        return isSent;
+    }
+
+    public void setSent(boolean sent) {
+        isSent = sent;
     }
 
     public ChatRoom getChatRoom() {
