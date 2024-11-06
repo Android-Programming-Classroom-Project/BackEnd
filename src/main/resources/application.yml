@@ -5,7 +5,7 @@ spring:
     secret: dfhfdsafdsafdskjhfdajfhiaadsfhasdhfdsajafdsjsdf
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/bridgetalk?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://129.154.54.25:3306/bridgetalk?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password: faith1918!
   jpa:
