@@ -47,4 +47,12 @@ public class ChatRoomController {
         return (ResponseEntity<?>) ResponseEntity.badRequest();
     }
 
+    @PostMapping("/makeChatroom")
+    public ResponseEntity<?> makeChatroom(@RequestBody User user){
+        if(user.getUserId() != null){
+            return ResponseEntity.ok(chatRoomService.makeChatRoom(user));
+        }
+        return (ResponseEntity<?>) ResponseEntity.badRequest();
+    }
+
 }

@@ -20,6 +20,7 @@ public class WebsocketController {
     @SendTo("/pub/{roomId}")
     public Message greeting(@DestinationVariable String roomId, Message message) throws Exception {
         if(message != null){
+            System.out.println("message: "+ message.getContent());
             // 메세지 db 저장
             messageService.saveMessage(message);
         }
