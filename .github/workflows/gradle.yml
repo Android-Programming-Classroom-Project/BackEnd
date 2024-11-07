@@ -1,4 +1,4 @@
-name: Java CI with Gradle
+/name: Java CI with Gradle
 
 on:
   push:
@@ -66,4 +66,4 @@ jobs:
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/kimseowon/bridgetalk:1.0.0
           docker stop my-app || true
           docker rm my-app || true
-          docker run -d --name my-app -p 8888:8888 ${{ secrets.DOCKERHUB_USERNAME }}kimseowon/bridgetalk:1.0.0
+          docker run -d --name my-app -p 8888:8888 ${{ secrets.DOCKERHUB_USERNAME }}/kimseowon/bridgetalk:1.0.0
