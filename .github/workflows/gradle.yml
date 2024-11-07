@@ -56,11 +56,21 @@ jobs:
     needs: build
 
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
     # .ssh 디렉토리 생성 및 권한 설정
     - name: Create .ssh directory
       run: |
         mkdir -p ~/.ssh
         chmod 700 ~/.ssh
+
+    # 비밀키 파일 작성 및 권한 설정
+    - name: Write SSH Key
+      run: |
+        echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ls -al ~/.ssh
 
     # 호스트 키를 신뢰 목록에 추가
     - name: Add known hosts
