@@ -37,17 +37,17 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        
+
     # 2. Gradle 권한 설정
     - name: Run chmod to make gradlew executable
       run: chmod +x ./gradlew
-        
+
     # 3. Gradle로 빌드
     - name: Build with Gradle
       uses: gradle/gradle-build-action@main
       with:
-        arguments: build
-        
+        arguments: build --scan
+
     # 4. Docker 이미지 빌드 및 푸시
     - name: Docker build and push
       run: |
