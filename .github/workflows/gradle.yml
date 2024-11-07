@@ -72,7 +72,7 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.PRIVATE_KEY }}
+        key_path: ~/.ssh/id_rsa
         script: |
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/bridgetalk:1.0.0
           docker stop my-app || true
