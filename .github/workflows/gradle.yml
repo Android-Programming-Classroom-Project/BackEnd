@@ -13,20 +13,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      db:
-        image: mysql:latest
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: bridgetalk
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -42,7 +28,15 @@ jobs:
     - name: Run chmod to make gradlew executable
       run: chmod +x ./gradlew
 
-    # 3. Gradle로 빌드
+    - name: Setup MySQL
+      uses: samin/mysql-action@v1
+      with:
+          character set server: 'utf8'
+          mysql database: 'bridetalk'
+          mysql user: 'root'
+          mysql password: '`faith1918!`'
+
+      # 3. Gradle로 빌드
     - name: Build with Gradle
       uses: gradle/gradle-build-action@main
       with:
