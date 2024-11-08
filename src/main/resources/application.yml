@@ -5,7 +5,7 @@ spring:
     secret: dfhfdsafdsafdskjhfdajfhiaadsfhasdhfdsajafdsjsdf
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://mysql-container:3306/bridgetalk?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://129.154.54.25:3306/bridgetalk?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password: faith1918!
   jpa:
@@ -13,9 +13,10 @@ spring:
       ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 
 server:
   port: 8888
