@@ -36,6 +36,12 @@ public class PostController {
 //        commentService.makeComment(postUserDTO.getUser(),post);
         return ResponseEntity.ok().body(post);
     }
+    // 전체 게시물
+    @GetMapping("/schoolPost/{schoolId}")
+    public ResponseEntity<?> SchoolPost(@RequestHeader UUID schoolId){
+        List<Post> posts = postService.bringEntirePost(schoolId);
+        return ResponseEntity.ok(posts);
+    }
 
     //게시물 조회
     @GetMapping("/{id}")

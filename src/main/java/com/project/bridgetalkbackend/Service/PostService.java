@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -94,5 +95,10 @@ public class PostService {
         } else {
             throw new IllegalStateException("시스템 오류: 좋아요 수는 이미 0입니다.");
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> bringEntirePost(UUID schoolId) {
+        return postRepository.findBySchoolsSchoolId(schoolId);
     }
 }
