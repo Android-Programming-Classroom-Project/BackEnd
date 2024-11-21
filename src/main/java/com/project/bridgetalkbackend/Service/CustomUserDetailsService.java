@@ -9,6 +9,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
@@ -28,5 +31,10 @@ public class CustomUserDetailsService implements UserDetailsService {
             return new CustomUserDetails(userData);
         }
         throw new UsernameNotFoundException("아이디 또는 비밀번호가 다릅니다.");
+    }
+
+    public User findUser(UUID userId) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findById(userId);
+        return user.orElseThrow(() -> new UsernameNotFoundException("user정보 X"));
     }
 }

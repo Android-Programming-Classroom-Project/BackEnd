@@ -1,9 +1,11 @@
 package com.project.bridgetalkbackend.Controller;
 
 import com.project.bridgetalkbackend.Service.CommentService;
+import com.project.bridgetalkbackend.Service.CustomUserDetailsService;
 import com.project.bridgetalkbackend.Service.PostService;
 import com.project.bridgetalkbackend.domain.Comment;
 import com.project.bridgetalkbackend.domain.Post;
+import com.project.bridgetalkbackend.domain.User;
 import com.project.bridgetalkbackend.dto.PostCommentDTO;
 import com.project.bridgetalkbackend.dto.PostUserDTO;
 import org.slf4j.Logger;
@@ -20,21 +22,26 @@ import java.util.UUID;
 public class PostController {
     private final PostService postService;
     private final CommentService commentService;
+    private final CustomUserDetailsService customUserDetailsService;
     private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
     @Autowired
-    public PostController(PostService postService,CommentService commentService) {
+    public PostController(PostService postService, CommentService commentService, CustomUserDetailsService customUserDetailsService) {
         this.postService = postService;
         this.commentService = commentService;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     //게시물, 댓글 생성
     @PostMapping("/postMake")
     public ResponseEntity<?> postMake(@RequestBody PostUserDTO postUserDTO){
         logger.info("/postMake");
-        Post post = postService.makePost(postUserDTO.getPost());
+        User user = customUserDetailsService.findUser(postUserDTO.getUser().getUserId());
+        Post post = postUserDTO.getPost();
+        post.setUser(user);
+        Post postSave = postService.makePost(postUserDTO.getPost());
 //        commentService.makeComment(postUserDTO.getUser(),post);
-        return ResponseEntity.ok().body(post);
+        return ResponseEntity.ok().body(postSave);
     }
     // 전체 게시물
     @GetMapping("/schoolPost/{schoolId}")
