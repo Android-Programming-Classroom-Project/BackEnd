@@ -38,7 +38,7 @@ public class PostController {
     }
     // 전체 게시물
     @GetMapping("/schoolPost/{schoolId}")
-    public ResponseEntity<?> SchoolPost(@RequestHeader UUID schoolId){
+    public ResponseEntity<?> SchoolPost(@PathVariable UUID schoolId){
         List<Post> posts = postService.bringEntirePost(schoolId);
         return ResponseEntity.ok(posts);
     }
