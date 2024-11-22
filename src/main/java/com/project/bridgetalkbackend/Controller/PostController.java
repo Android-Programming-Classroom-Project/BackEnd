@@ -46,6 +46,7 @@ public class PostController {
     // 전체 게시물
     @GetMapping("/schoolPost/{schoolId}")
     public ResponseEntity<?> SchoolPost(@PathVariable UUID schoolId){
+        logger.info("특정학교 전체 게시물 메소드 실행");
         List<Post> posts = postService.bringEntirePost(schoolId);
         return ResponseEntity.ok(posts);
     }
