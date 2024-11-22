@@ -37,9 +37,7 @@ public class PostController {
     public ResponseEntity<?> postMake(@RequestBody PostUserDTO postUserDTO){
         logger.info("/postMake");
         User user = customUserDetailsService.findUser(postUserDTO.getUser().getUserId());
-        Post post = postUserDTO.getPost();
-        post.setUser(user);
-        Post postSave = postService.makePost(postUserDTO.getPost());
+        Post postSave = postService.makePost(postUserDTO.getPost(), user);
 //        commentService.makeComment(postUserDTO.getUser(),post);
         return ResponseEntity.ok().body(postSave);
     }

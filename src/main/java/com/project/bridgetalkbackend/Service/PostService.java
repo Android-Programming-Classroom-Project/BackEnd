@@ -41,8 +41,11 @@ public class PostService {
 
     //게시물 생성
     @Transactional
-    public Post makePost(Post post) {
+    public Post makePost(Post post, User user) {
         logger.info("PostService Class makePost Method");
+        post.setUser(user);
+        post.setSchools(user.getSchools());
+        post.setUser(user);
         return postRepository.save(post);
     }
 
