@@ -62,7 +62,7 @@ public class PostService {
 
     //좋아요 추가
     @Transactional
-    public void addLiked(User user, Post post) {
+    public Post addLiked(User user, Post post) {
         if (!likedService.existLiked(user.getUserId(), post.getPostId())) {
             Liked liked = new Liked();
             liked.setPost(post);
@@ -74,8 +74,9 @@ public class PostService {
                     }
             );
             pt.setLike_count(pt.getLike_count() + 1);
-            postRepository.save(pt);
+            return postRepository.save(pt);
         }
+        throw new IllegalArgumentException("이미 좋아요 누름");
     }
 
     //좋아요 삭제

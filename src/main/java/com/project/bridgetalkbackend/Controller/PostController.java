@@ -73,8 +73,8 @@ public class PostController {
     @PutMapping("/addLiked")
     public ResponseEntity<?> addLiked(@RequestBody PostUserDTO likedDTO){
         logger.info("/addLiked");
-        postService.addLiked(likedDTO.getUser(),likedDTO.getPost());
-        return ResponseEntity.ok().build();
+        Post post = postService.addLiked(likedDTO.getUser(),likedDTO.getPost());
+        return ResponseEntity.ok().body(post);
     }
 
     @PutMapping("/deleteLiked")
