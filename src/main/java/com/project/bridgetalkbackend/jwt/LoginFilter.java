@@ -1,6 +1,7 @@
 package com.project.bridgetalkbackend.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.bridgetalkbackend.Controller.PostController;
 import com.project.bridgetalkbackend.Service.LoginService;
 import com.project.bridgetalkbackend.dto.CustomUserDetails;
 import com.project.bridgetalkbackend.dto.LoginDTO;
@@ -9,6 +10,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +29,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final UserRepository userRepository;
     private final LoginService loginService;
     private final JWTUtil jwtUtil;
+    private static final Logger logger = LoggerFactory.getLogger(LoginFilter.class);
 
     public LoginFilter(AuthenticationManager authenticationManager, UserRepository userRepository, JWTUtil jwtUtil,LoginService loginService) {
         this.authenticationManager = authenticationManager;
@@ -54,7 +58,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     //로그인 성공시 실행하는 메소드 (여기서 JWT를 발급하면 됨)
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
-        //UserDetailsS
+        logger.info("로그인성공");
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
