@@ -37,4 +37,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<User> user = userRepository.findById(userId);
         return user.orElseThrow(() -> new UsernameNotFoundException("user정보 X"));
     }
+
+    public boolean checkUser(UUID userId) {
+        return userRepository.existsById(userId);
+    }
 }

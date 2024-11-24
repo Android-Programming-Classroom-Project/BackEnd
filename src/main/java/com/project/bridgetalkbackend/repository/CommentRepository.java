@@ -14,4 +14,6 @@ public interface CommentRepository extends JpaRepository<Comment, UUID> {
     public List<Comment> findByPostPostId(UUID postId);
 
     public boolean existsByCommentId(UUID commentId);
+
+    boolean existsByCommentIdAndUserUserId(UUID commentId, UUID userId);
 }

@@ -90,11 +90,21 @@ public class PostController {
         if(!postService.checkPost(comment.getPost())){
             throw new IllegalArgumentException("게시물존재 X");
         }
+
+        if(comment.getUser().getUserId() == null){
+            throw new IllegalArgumentException("userIdX :  userId 보내주세요");
+        }
         return commentService.addComment(comment);
     }
 
     @DeleteMapping("/deleteComment/{id}")
-    public void deleteComment(@PathVariable UUID id){
+    public void deleteComment(@PathVariable UUID id, @RequestBody User user){
+        if(!customUserDetailsService.checkUser(user.getUserId())){
+            throw new IllegalArgumentException("user 정보 X");
+        }
+        if(!commentService.checkCommentUser(id, user)){
+            throw new IllegalArgumentException("해당 user가 댓글 생성한 것이 아님");
+        }
         commentService.deleteComment(id);
     }
 }

@@ -51,4 +51,8 @@ public class CommentService {
     public void deleteComment(UUID id) {
         commentRepository.deleteById(id);
     }
+
+    public boolean checkCommentUser(UUID id, User user) {
+        return commentRepository.existsByCommentIdAndUserUserId(id,user.getUserId());
+    }
 }
