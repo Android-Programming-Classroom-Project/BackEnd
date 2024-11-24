@@ -24,17 +24,30 @@ public class ChatRoomService {
 
     //chat 생성
     @Transactional
-    public ChatRoom makeChatRoom(User user){
+    public ChatRoom makeChatRoom(UUID userId, UUID userId1){
+        ChatRoom chatRoom = new ChatRoom();
+        User user = new User();
+        user.setUserId(userId);
+        chatRoom.setUser(user);
+        User user1 = new User();
+        user.setUserId(userId);
+        chatRoom.setUser1(user1);
+        return chatRoomRepository.save(chatRoom);
+    }
+    //test용
+    @Transactional
+    public ChatRoom makeTestChatRoom(User user){
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.setUser(user);
         return chatRoomRepository.save(chatRoom);
     }
 
+
     //chat 목록 조회
     @Transactional(readOnly = true)
     public List<ChatRoom> chatRoomsFind(User user){
         logger.info("chatRoomService: chatRoomsFind Method");
-        return chatRoomRepository.findByUserUserId(user.getUserId());
+        return chatRoomRepository.findByUserUserIdOrUser1UserId(user.getUserId(), user.getUserId());
     }
 
     //chat 삭제

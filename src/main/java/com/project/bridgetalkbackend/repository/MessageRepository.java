@@ -10,4 +10,6 @@ public interface MessageRepository extends JpaRepository<Message, UUID> {
     Message findFirstByUserUserIdAndChatRoomRoomIdOrderByCreatedAtDesc(UUID userId, UUID roomId);
     boolean existsByChatRoomRoomIdAndUserUserId(UUID roomId, UUID userId);
     List<Message> findByUserUserIdAndChatRoomRoomId(UUID userId, UUID roomId);
+
+    List<Message> findByChatRoomRoomId(UUID roomId);
 }

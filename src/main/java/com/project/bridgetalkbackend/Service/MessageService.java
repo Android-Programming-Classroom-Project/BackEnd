@@ -37,7 +37,7 @@ public class MessageService {
     // 채팅 내역 가저오기
     @Transactional(readOnly = true)
     public List<Message> getMessageList(User user, ChatRoom chatRoom){
-        List<Message> messageList = messageRepository.findByUserUserIdAndChatRoomRoomId(user.getUserId(), chatRoom.getRoomId());
+        List<Message> messageList = messageRepository.findByChatRoomRoomId(chatRoom.getRoomId());
         List<Message> messageUpdate = new ArrayList<>();
         for(var message : messageList){
             if(user.getUserId().equals(message.getUser().getUserId())){

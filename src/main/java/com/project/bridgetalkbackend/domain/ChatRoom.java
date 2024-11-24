@@ -21,6 +21,10 @@ public class ChatRoom {
     @ManyToOne
     @JoinColumn
     private User user;
+
+    @ManyToOne
+    @JoinColumn
+    private User user1;
     @Column
     @JsonFormat(pattern = "yyyy-MM-dd")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -46,6 +50,14 @@ public class ChatRoom {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public User getUser1() {
+        return user1;
+    }
+
+    public void setUser1(User user1) {
+        this.user1 = user1;
     }
 
     @PrePersist
