@@ -81,7 +81,7 @@ public class PostService {
 
     //좋아요 삭제
     @Transactional
-    public void deleteLiked(User user, Post post) {
+    public Post deleteLiked(User user, Post post) {
         // 좋아요가 존재하는지 확인
         if (!likedService.existLiked(user.getUserId(), post.getPostId())) {
             throw new IllegalArgumentException("좋아요 기능: 좋아요가 존재하지 않습니다.");
@@ -95,7 +95,7 @@ public class PostService {
         // 좋아요 수 감소
         if (pt.getLike_count() > 0) {
             pt.setLike_count(pt.getLike_count() - 1);
-            postRepository.save(pt);
+            return postRepository.save(pt);
         } else {
             throw new IllegalStateException("시스템 오류: 좋아요 수는 이미 0입니다.");
         }

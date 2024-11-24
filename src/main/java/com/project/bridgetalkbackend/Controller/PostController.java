@@ -79,8 +79,8 @@ public class PostController {
 
     @PutMapping("/deleteLiked")
     public ResponseEntity<?> deleteLiked(@RequestBody PostUserDTO likedDTO){
-        postService.deleteLiked(likedDTO.getUser(),likedDTO.getPost());
-        return ResponseEntity.ok().build();
+        Post post =  postService.deleteLiked(likedDTO.getUser(),likedDTO.getPost());
+        return ResponseEntity.ok().body(post);
     }
 
     @PostMapping("/addComment")
