@@ -38,9 +38,9 @@ public class ChatRoomController {
     }
 
     // 채팅 내역 가저오기
-    @GetMapping("/message")
+    @PostMapping("/message")
     public ResponseEntity<?> getMessage(@RequestBody UserChatroomRequest userChatroomRequest){
-        if(userChatroomRequest.getUser() != null && userChatroomRequest.getChatRoom() != null){
+        if(userChatroomRequest.getUser().getUserId() != null && userChatroomRequest.getChatRoom().getRoomId() != null){
             List<Message> messageList = messageService.getMessageList(userChatroomRequest.getUser(), userChatroomRequest.getChatRoom());
             return ResponseEntity.ok(messageList);
         }
