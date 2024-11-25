@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE + 99)
 public class StompHandler implements ChannelInterceptor {
-
     // 추후 jwt 토큰 검증해야함
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel){

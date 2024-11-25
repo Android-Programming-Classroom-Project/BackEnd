@@ -10,21 +10,41 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ChatRoomService {
     private static final Logger logger = LoggerFactory.getLogger(ChatRoomService.class);
     private final ChatRoomRepository chatRoomRepository;
+    private final BlockingQueue<UUID> waitingQueue = new LinkedBlockingQueue<>();
+    private ChatRoom room = null;
 
     @Autowired
     public ChatRoomService(ChatRoomRepository chatRoomRepository) {
         this.chatRoomRepository = chatRoomRepository;
     }
 
+
+    public ChatRoom randomMatching(UUID userId) {
+        if (room == null) {
+            User u = new User();
+            u.setUserId(userId);
+            this.room = makeTestChatRoom(u);
+        } else {
+            ChatRoom a = room;
+            room = null;
+            return a;
+        }
+        return room;
+    }
+
     //chat 생성
     @Transactional
-    public ChatRoom makeChatRoom(UUID userId, UUID userId1){
+    public ChatRoom makeChatRoom(UUID userId, UUID userId1) {
         ChatRoom chatRoom = new ChatRoom();
         User user = new User();
         user.setUserId(userId);
@@ -34,9 +54,10 @@ public class ChatRoomService {
         chatRoom.setUser1(user1);
         return chatRoomRepository.save(chatRoom);
     }
+
     //test용
     @Transactional
-    public ChatRoom makeTestChatRoom(User user){
+    public ChatRoom makeTestChatRoom(User user) {
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.setUser(user);
         return chatRoomRepository.save(chatRoom);
@@ -45,14 +66,39 @@ public class ChatRoomService {
 
     //chat 목록 조회
     @Transactional(readOnly = true)
-    public List<ChatRoom> chatRoomsFind(User user){
+    public List<ChatRoom> chatRoomsFind(User user) {
         logger.info("chatRoomService: chatRoomsFind Method");
         return chatRoomRepository.findByUserUserIdOrUser1UserId(user.getUserId(), user.getUserId());
     }
 
     //chat 삭제
     @Transactional
-    public ChatRoom deleteChatroom(User user){
+    public ChatRoom deleteChatroom(User user) {
         return chatRoomRepository.deleteByUserUserId(user.getUserId());
+    }
+
+
+    public Optional<UUID> findMatch(UUID userId) throws InterruptedException {
+        // 대기열에 사용자를 추가
+        boolean added = waitingQueue.offer(userId, 1, TimeUnit.SECONDS);
+        if (!added) {
+            return Optional.empty();
+        }
+
+        // 1분 동안 대기하며 다른 사용자를 기다림
+        long startTime = System.currentTimeMillis();
+        while (System.currentTimeMillis() - startTime < 60000) { // 1분 대기
+            UUID otherUserId = waitingQueue.poll(1, TimeUnit.SECONDS);
+            if (otherUserId != null && !otherUserId.equals(userId)) {
+                // 매칭 성공 시
+                return Optional.of(otherUserId);
+            } else if (otherUserId != null) {
+                // 자신이 대기열에서 나왔다면 다시 대기열에 추가
+                waitingQueue.offer(otherUserId, 1, TimeUnit.SECONDS);
+            }
+        }
+        // 1분 동안 매칭되지 않으면 대기열에서 자신을 제거
+        waitingQueue.remove(userId);
+        return Optional.empty();
     }
 }
