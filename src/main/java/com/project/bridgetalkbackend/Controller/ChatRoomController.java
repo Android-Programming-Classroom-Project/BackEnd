@@ -34,23 +34,13 @@ public class ChatRoomController {
     //채팅 목록 조회
     @PostMapping("/")
     public ResponseEntity<?> getChatList(@RequestBody User user){
-        List<ChatItem> chatList  = new ArrayList<>();
+        List<ChatItem> chatList;
         logger.info("채팅목록 조회: /chat");
         List<ChatRoom> chatRoomList =  chatRoomService.chatRoomsFind(user);
         for(var room : chatRoomList){
             room.setUser(user);
         }
-        List<Message> messageList = messageService.getMessageRecently(user,chatRoomList);
-        for(int i = 0; i<chatRoomList.size(); i++){
-            UUID roomId = chatRoomList.get(i).getRoomId();
-            String content =  (messageList.get(i) != null) ? messageList.get(i).getContent() : "";
-            User u = chatRoomList.get(i).getUser();
-            Schools school = chatRoomList.get(i).getUser().getSchools();
-            String createdAt = chatRoomList.get(i).getCreatedAt().toString();
-            ChatItem chatItem = new ChatItem(roomId,content,u,school,createdAt);
-            chatList.add(chatItem);
-        }
-
+        chatList = messageService.getMessageRecently(user,chatRoomList);
         return ResponseEntity.ok(chatList);
     }
 

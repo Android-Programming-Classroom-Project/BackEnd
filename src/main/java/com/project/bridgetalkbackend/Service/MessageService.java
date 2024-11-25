@@ -4,12 +4,14 @@ import com.project.bridgetalkbackend.domain.ChatRoom;
 import com.project.bridgetalkbackend.domain.Comment;
 import com.project.bridgetalkbackend.domain.Message;
 import com.project.bridgetalkbackend.domain.User;
+import com.project.bridgetalkbackend.dto.ChatItem;
 import com.project.bridgetalkbackend.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class MessageService {
@@ -20,18 +22,22 @@ public class MessageService {
     }
 
     // 가장 최근 메세지 정보가 져오기
-    public List<Message> getMessageRecently(User user,List<ChatRoom> chatList){
+    public List<ChatItem> getMessageRecently(User user,List<ChatRoom> chatList){
+        List<ChatItem> chats  = new ArrayList<>();
         List<Message> messageList = new ArrayList<>();
         for(var chatRoom : chatList){
             if(messageRepository.existsByChatRoomRoomIdAndUserUserId(chatRoom.getRoomId(),user.getUserId())){
                 Message message = messageRepository.findFirstByUserUserIdAndChatRoomRoomIdOrderByCreatedAtDesc(user.getUserId(),chatRoom.getRoomId());
+                UUID roomId = chatRoom.getRoomId();
+                String m = message.getContent();
+                if(message.getContent().isEmpty()){
+                    m = "";
+                }
+                chats.add(new ChatItem(roomId,m,user,user.getSchools(),chatRoom.getCreatedAt().toString()));
                 messageList.add(message);
             }
         }
-        if(messageList.isEmpty()){
-            return null;
-        }
-        return messageList;
+        return chats;
     }
 
     // 채팅 내역 가저오기
