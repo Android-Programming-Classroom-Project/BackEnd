@@ -3,6 +3,7 @@ package com.project.bridgetalkbackend.Service;
 import com.project.bridgetalkbackend.domain.ChatRoom;
 import com.project.bridgetalkbackend.domain.User;
 import com.project.bridgetalkbackend.repository.ChatRoomRepository;
+import com.project.bridgetalkbackend.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,15 @@ public class ChatRoomService {
     private static final Logger logger = LoggerFactory.getLogger(ChatRoomService.class);
     private final ChatRoomRepository chatRoomRepository;
     private final BlockingQueue<UUID> waitingQueue = new LinkedBlockingQueue<>();
+    private final UserRepository userRepository;
     private ChatRoom room = null;
 
-    @Autowired
-    public ChatRoomService(ChatRoomRepository chatRoomRepository) {
+    public ChatRoomService(ChatRoomRepository chatRoomRepository, UserRepository userRepository) {
         this.chatRoomRepository = chatRoomRepository;
+        this.userRepository = userRepository;
     }
+
+
 
 
     public ChatRoom randomMatching(UUID userId) {
@@ -46,11 +50,12 @@ public class ChatRoomService {
     @Transactional
     public ChatRoom makeChatRoom(UUID userId, UUID userId1) {
         ChatRoom chatRoom = new ChatRoom();
-        User user = new User();
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+
         user.setUserId(userId);
         chatRoom.setUser(user);
 
-        User user1 = new User();
+        User user1 = userRepository.findById(userId1).orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId1));
         user.setUserId(userId1);
         chatRoom.setUser1(user1);
         return chatRoomRepository.save(chatRoom);
