@@ -36,6 +36,7 @@ public class PostService {
         Post p = postRepository.findById(post.getPostId()).orElseThrow();
         p.setContent(post.getContent());
         p.setTitle(post.getTitle());
+        p.setType(post.getType());
         return postRepository.save(p);
     }
 
