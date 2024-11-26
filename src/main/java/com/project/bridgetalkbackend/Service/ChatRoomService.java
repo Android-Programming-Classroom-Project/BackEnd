@@ -51,12 +51,10 @@ public class ChatRoomService {
     public ChatRoom makeChatRoom(UUID userId, UUID userId1) {
         ChatRoom chatRoom = new ChatRoom();
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
-
         user.setUserId(userId);
         chatRoom.setUser(user);
-
         User user1 = userRepository.findById(userId1).orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId1));
-        user.setUserId(userId1);
+        user1.setUserId(userId1);
         chatRoom.setUser1(user1);
         return chatRoomRepository.save(chatRoom);
     }
