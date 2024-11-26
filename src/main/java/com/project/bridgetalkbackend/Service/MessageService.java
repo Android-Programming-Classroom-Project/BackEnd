@@ -9,9 +9,7 @@ import com.project.bridgetalkbackend.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class MessageService {
@@ -24,7 +22,6 @@ public class MessageService {
     // 가장 최근 메세지 정보가 져오기
     public List<ChatItem> getMessageRecently(User user,List<ChatRoom> chatList){
         List<ChatItem> chats  = new ArrayList<>();
-//        List<Message> messageList = new ArrayList<>();
         for(var chatRoom : chatList){
             if(messageRepository.existsByChatRoomRoomIdAndUserUserId(chatRoom.getRoomId(),user.getUserId())){
                 Message message = messageRepository.findFirstByUserUserIdAndChatRoomRoomIdOrderByCreatedAtDesc(user.getUserId(),chatRoom.getRoomId());
@@ -33,13 +30,19 @@ public class MessageService {
                 if(message.getContent().isEmpty()){
                     m = "";
                 }
-                chats.add(new ChatItem(roomId,m,user,user.getSchools(),chatRoom.getCreatedAt().toString()));
-//                messageList.add(message);
+                chats.add(new ChatItem(roomId,m,user,user.getSchools(),message.getCreatedAt().toString()));
             }
             else{
                 chats.add(new ChatItem( chatRoom.getRoomId(),"",user,user.getSchools(),chatRoom.getCreatedAt().toString()));
             }
         }
+        Collections.sort(chats, new Comparator<ChatItem>() {
+            @Override
+            public int compare(ChatItem c1, ChatItem c2) {
+                return c2.getCreatedAt().compareTo(c1.getCreatedAt());
+            }
+        });
+
         return chats;
     }
 
