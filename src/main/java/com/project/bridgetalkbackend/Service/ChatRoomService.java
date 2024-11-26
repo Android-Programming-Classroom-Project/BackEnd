@@ -51,10 +51,10 @@ public class ChatRoomService {
     public ChatRoom makeChatRoom(UUID userId, UUID userId1) {
         ChatRoom chatRoom = new ChatRoom();
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
-        user.setUserId(userId);
-        chatRoom.setUser(user);
         User user1 = userRepository.findById(userId1).orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId1));
+        user.setUserId(userId);
         user1.setUserId(userId1);
+        chatRoom.setUser(user);
         chatRoom.setUser1(user1);
         return chatRoomRepository.save(chatRoom);
     }
@@ -71,8 +71,8 @@ public class ChatRoomService {
     //chat 목록 조회
     @Transactional(readOnly = true)
     public List<ChatRoom> chatRoomsFind(User user) {
-        logger.info("chatRoomService: chatRoomsFind Method");
-        return chatRoomRepository.findByUserUserIdOrUser1UserId(user.getUserId(), user.getUserId());
+        logger.info("chatRoomService: 채팅목록 찾기 메소드 실행");
+        return chatRoomRepository.findByUser_UserIdOrUser1_UserId(user.getUserId(), user.getUserId());
     }
 
     //chat 삭제
