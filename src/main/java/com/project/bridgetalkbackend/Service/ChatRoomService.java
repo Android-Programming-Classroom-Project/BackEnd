@@ -49,8 +49,9 @@ public class ChatRoomService {
         User user = new User();
         user.setUserId(userId);
         chatRoom.setUser(user);
+
         User user1 = new User();
-        user.setUserId(userId);
+        user.setUserId(userId1);
         chatRoom.setUser1(user1);
         return chatRoomRepository.save(chatRoom);
     }
