@@ -44,6 +44,7 @@ public class PostService {
     public Post makePost(Post post, User user) {
         logger.info("PostService Class makePost Method");
         post.setUser(user);
+        post.setPostId(null);
         post.setSchools(user.getSchools());
         post.setUser(user);
         return postRepository.save(post);

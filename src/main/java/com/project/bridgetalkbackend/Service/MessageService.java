@@ -24,7 +24,7 @@ public class MessageService {
     // 가장 최근 메세지 정보가 져오기
     public List<ChatItem> getMessageRecently(User user,List<ChatRoom> chatList){
         List<ChatItem> chats  = new ArrayList<>();
-        List<Message> messageList = new ArrayList<>();
+//        List<Message> messageList = new ArrayList<>();
         for(var chatRoom : chatList){
             if(messageRepository.existsByChatRoomRoomIdAndUserUserId(chatRoom.getRoomId(),user.getUserId())){
                 Message message = messageRepository.findFirstByUserUserIdAndChatRoomRoomIdOrderByCreatedAtDesc(user.getUserId(),chatRoom.getRoomId());
@@ -34,7 +34,10 @@ public class MessageService {
                     m = "";
                 }
                 chats.add(new ChatItem(roomId,m,user,user.getSchools(),chatRoom.getCreatedAt().toString()));
-                messageList.add(message);
+//                messageList.add(message);
+            }
+            else{
+                chats.add(new ChatItem( chatRoom.getRoomId(),"",user,user.getSchools(),chatRoom.getCreatedAt().toString()));
             }
         }
         return chats;
