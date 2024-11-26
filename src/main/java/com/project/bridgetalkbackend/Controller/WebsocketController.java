@@ -42,13 +42,14 @@ public class WebsocketController {
 
     // Matching
     @MessageMapping("/matching")
-    @SendTo("/sub/matching")
+        @SendTo("/sub/matching")
     public Matching meeting(Matching matching) throws Exception{
+        logger.info("/matching");
         HashSet<UUID> users = new HashSet<>();
         users.add(matching.getUserId());
-
         if(users.size() == 2){
             matching.setType("matching");
+            logger.info("matching 시작");
             matching.setUsers(users);
             List userList = new ArrayList<>(users);
             if(userList.size() == 2){
