@@ -36,6 +36,7 @@ public class ChatRoom {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime updatedAt;
 
+
     public UUID getRoomId() {
         return roomId;
     }
