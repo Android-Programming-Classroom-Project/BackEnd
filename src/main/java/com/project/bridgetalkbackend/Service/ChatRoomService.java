@@ -53,6 +53,14 @@ public class ChatRoomService {
         user1.setUserId(userId1);
         chatRoom.setUser(user);
         chatRoom.setUser1(user1);
+
+        if(chatRoomRepository.existsByUserUserIdAndUser1UserId(userId, userId1)){
+            return chatRoomRepository.findByUserUserIdAndUser1UserId(userId, userId1);
+        }
+        if(chatRoomRepository.existsByUserUserIdAndUser1UserId(userId1, userId)){
+            return chatRoomRepository.findByUserUserIdAndUser1UserId(userId1, userId);
+        }
+
         return chatRoomRepository.save(chatRoom);
     }
 
