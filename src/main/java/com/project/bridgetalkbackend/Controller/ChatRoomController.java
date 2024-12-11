@@ -68,29 +68,7 @@ public class ChatRoomController {
         }
         return (ResponseEntity<?>) ResponseEntity.badRequest();
     }
-//    // 랜덤 매칭
-    @PostMapping("/randomMatching")
-    public Map<String, Object> match(@RequestParam UUID userId) {
-    Map<String, Object> response = new HashMap<>();
-    try {
-        Optional<UUID> matchedUser = chatRoomService.findMatch(userId);
 
-        if (matchedUser.isPresent()) {
-            // 매칭된 사용자와 새로운 채팅방 생성
-            ChatRoom chatRoom = chatRoomService.makeChatRoom(userId, matchedUser.get());
-            response.put("status", "matched");
-            response.put("chatRoomId", chatRoom);
-        } else {
-            response.put("status", "waiting");
-        }
-    } catch (InterruptedException e) {
-        Thread.currentThread().interrupt();
-        response.put("status", "error");
-        response.put("message", "매칭 중 오류가 발생했습니다.");
-    }
-
-    return response;
-}
 
     @PostMapping("/makeChatroomTest")
     public ResponseEntity<?> makeChatroom1(@RequestBody User user){
