@@ -22,6 +22,7 @@ import java.util.UUID;
 public class WebsocketController {
     private final MessageService messageService;
     private final ChatRoomService chatRoomService;
+    HashSet<UUID> users = new HashSet<>();
     private static final Logger logger = LoggerFactory.getLogger(WebsocketController.class);
 
     public WebsocketController(MessageService messageService, ChatRoomService chatRoomService) {
@@ -45,7 +46,6 @@ public class WebsocketController {
         @SendTo("/sub/matching")
     public Matching meeting(Matching matching) throws Exception{
         logger.info("/matching");
-        HashSet<UUID> users = new HashSet<>();
         users.add(matching.getUserId());
         if(users.size() == 2){
             matching.setType("matching");
