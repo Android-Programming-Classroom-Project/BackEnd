@@ -105,6 +105,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public List<Post> bringEntirePost(UUID schoolId) {
-        return postRepository.findBySchoolsSchoolId(schoolId);
+
+        return postRepository.findBySchoolsSchoolIdOrderByUpdatedAtDesc(schoolId);
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface PostRepository extends JpaRepository<Post, UUID> {
-    public List<Post> findBySchoolsSchoolId(UUID schoolId);
+    public List<Post> findBySchoolsSchoolIdOrderByUpdatedAtDesc(UUID schoolId);
 
     public boolean existsById(UUID postId);
     //update 문

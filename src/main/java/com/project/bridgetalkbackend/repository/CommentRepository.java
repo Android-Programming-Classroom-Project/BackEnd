@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface CommentRepository extends JpaRepository<Comment, UUID> {
     public boolean existsByPostPostId(UUID post);
 
-    public List<Comment> findByPostPostId(UUID postId);
+    public List<Comment> findByPostPostIdOrderByCreatedAtDesc(UUID postId);
 
     public boolean existsByCommentId(UUID commentId);
 

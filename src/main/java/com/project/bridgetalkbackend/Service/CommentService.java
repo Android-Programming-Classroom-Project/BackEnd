@@ -37,7 +37,7 @@ public class CommentService {
     @Transactional(readOnly = true)
     public List<Comment> getComment(UUID postId) {
         if(commentRepository.existsByPostPostId(postId)){
-            return commentRepository.findByPostPostId(postId);
+            return commentRepository.findByPostPostIdOrderByCreatedAtDesc(postId);
         }
         return null;
     }
