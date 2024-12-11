@@ -72,17 +72,7 @@ public class ChatRoomService {
         return chatRoomRepository.findByUser_UserIdOrUser1_UserId(user.getUserId(), user.getUserId());
     }
 
-    //chat 삭제
-    @Transactional
-    public void deleteChatroom(User user) {
-        if(chatRoomRepository.existsByUserUserIdOrUser1UserId(user.getUserId(),user.getUserId())){
-            chatRoomRepository.deleteByUserUserIdOrUser1UserId(user.getUserId(),user.getUserId());
-        }
-        else{
-            throw new IllegalArgumentException("서버에러");
-        }
-    }
-
+    //chat  삭제
     @Transactional
     public void deleteChatRoom(UUID roomId){
         if(chatRoomRepository.existsByRoomId(roomId)){
