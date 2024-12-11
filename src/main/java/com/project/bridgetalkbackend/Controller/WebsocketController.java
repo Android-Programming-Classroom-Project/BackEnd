@@ -43,18 +43,19 @@ public class WebsocketController {
 
     // Matching
     @MessageMapping("/matching")
-        @SendTo("/sub/matching")
+    @SendTo("/sub/matching")
     public Matching meeting(Matching matching) throws Exception{
         logger.info("/matching");
         users.add(matching.getUserId());
+
         if(users.size() == 2){
             matching.setType("matching");
             logger.info("matching 시작");
             matching.setUsers(users);
-            List userList = new ArrayList<>(users);
+            List<UUID> userList = new ArrayList<>(users);
             if(userList.size() == 2){
                 users.clear();
-                ChatRoom chatRoom=chatRoomService.makeChatRoom(UUID.fromString((String) userList.get(0)), UUID.fromString((String) userList.get(0)));
+                ChatRoom chatRoom=chatRoomService.makeChatRoom(userList.get(0),  userList.get(1));
                 matching.setChatRoom(chatRoom.getRoomId());
                 return matching;
             }
