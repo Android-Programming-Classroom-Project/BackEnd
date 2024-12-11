@@ -83,6 +83,16 @@ public class ChatRoomService {
         }
     }
 
+    @Transactional
+    public void deleteChatRoom(UUID roomId){
+        if(chatRoomRepository.existsByRoomId(roomId)){
+            chatRoomRepository.deleteByRoomId(roomId);
+        }
+        else{
+            throw new IllegalArgumentException("서버 에러");
+        }
+    }
+
 
     public Optional<UUID> findMatch(UUID userId) throws InterruptedException {
         // 대기열에 사용자를 추가

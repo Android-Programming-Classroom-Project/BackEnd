@@ -28,9 +28,9 @@ public class ChatRoomController {
         this.postService = postService;
         this.messageService = messageService;
     }
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteChatList(@RequestBody User user){
-        chatRoomService.deleteChatroom(user);
+    @DeleteMapping("/delete/{roomId}")
+    public ResponseEntity<?> deleteChatList(@PathVariable UUID roomId){
+        chatRoomService.deleteChatRoom(roomId);
         return ResponseEntity.ok("삭제 완료 되었습니다");
     }
 
