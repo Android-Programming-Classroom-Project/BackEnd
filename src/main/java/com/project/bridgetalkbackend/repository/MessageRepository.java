@@ -11,5 +11,5 @@ public interface MessageRepository extends JpaRepository<Message, UUID> {
     boolean existsByChatRoomRoomId(UUID roomId);
     List<Message> findByUserUserIdAndChatRoomRoomId(UUID userId, UUID roomId);
 
-    List<Message> findByChatRoomRoomIdOrderByCreatedAtDesc(UUID roomId);
+    List<Message> findByChatRoomRoomIdOrderByCreatedAtAsc(UUID roomId);
 }
