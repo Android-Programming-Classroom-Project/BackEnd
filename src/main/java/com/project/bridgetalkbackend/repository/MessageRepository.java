@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface MessageRepository extends JpaRepository<Message, UUID> {
-    Message findFirstByUserUserIdAndChatRoomRoomIdOrderByCreatedAtDesc(UUID userId, UUID roomId);
-    boolean existsByChatRoomRoomIdAndUserUserId(UUID roomId, UUID userId);
+    Message findFirstByChatRoomRoomIdOrderByCreatedAtDesc(UUID roomId);
+    boolean existsByChatRoomRoomId(UUID roomId);
     List<Message> findByUserUserIdAndChatRoomRoomId(UUID userId, UUID roomId);
 
     List<Message> findByChatRoomRoomId(UUID roomId);
