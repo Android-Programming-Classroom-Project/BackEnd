@@ -25,7 +25,6 @@ public class Post {
     @ManyToOne
     @JoinColumn
     private User user;
-
     @ManyToOne
     @JoinColumn
     private Schools schools;

@@ -30,9 +30,6 @@ public class ChatRoomService {
         this.userRepository = userRepository;
     }
 
-
-
-
     public ChatRoom randomMatching(UUID userId) {
         if (room == null) {
             User u = new User();
@@ -77,8 +74,13 @@ public class ChatRoomService {
 
     //chat 삭제
     @Transactional
-    public ChatRoom deleteChatroom(User user) {
-        return chatRoomRepository.deleteByUserUserId(user.getUserId());
+    public void deleteChatroom(User user) {
+        if(chatRoomRepository.existsByUserUserIdOrUser1UserId(user.getUserId(),user.getUserId())){
+            chatRoomRepository.deleteByUserUserIdOrUser1UserId(user.getUserId(),user.getUserId());
+        }
+        else{
+            throw new IllegalArgumentException("서버에러");
+        }
     }
 
 

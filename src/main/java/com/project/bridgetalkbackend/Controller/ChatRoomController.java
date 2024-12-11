@@ -28,6 +28,11 @@ public class ChatRoomController {
         this.postService = postService;
         this.messageService = messageService;
     }
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteChatList(@RequestBody User user){
+        chatRoomService.deleteChatroom(user);
+        return ResponseEntity.ok("삭제 완료 되었습니다");
+    }
 
     //채팅 목록 조회
     @PostMapping("/")
