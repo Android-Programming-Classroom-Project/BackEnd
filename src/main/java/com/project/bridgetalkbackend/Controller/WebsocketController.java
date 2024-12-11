@@ -51,7 +51,7 @@ public class WebsocketController {
         if(users.size() == 2){
             matching.setType("matching");
             logger.info("matching 시작");
-            matching.setUsers(users);
+            matching.setUsers(new HashSet<>(users));
             List<UUID> userList = new ArrayList<>(users);
             if(userList.size() == 2){
                 users.clear();
