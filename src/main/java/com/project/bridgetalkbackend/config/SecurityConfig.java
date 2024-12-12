@@ -75,13 +75,13 @@ public class SecurityConfig {
 
         http
                 .httpBasic((auth) -> auth.disable());
-//        http
-//                .authorizeHttpRequests((auth) -> auth
-//                        .requestMatchers("/login", "/", "/join", "/reissue", "/schoolList","/bridgeTalkMessaging/**").permitAll()
-//                        .anyRequest().authenticated());
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .anyRequest().permitAll());
+                        .requestMatchers("/login", "/", "/join", "/reissue", "/schoolList","/bridgeTalkMessaging/**").permitAll()
+                        .anyRequest().authenticated());
+//        http
+//                .authorizeHttpRequests((auth) -> auth
+//                        .anyRequest().permitAll());
         http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
         http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), userRepository,jwtUtil, loginService), UsernamePasswordAuthenticationFilter.class);
